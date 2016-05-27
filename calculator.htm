@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html" charset="UTF-8"/>
+	<meta name="author" content="GallerySoft.info" />
+
+	<title>trainee004_calculator</title>
+    <style>
+        #calculator {
+            width: 330px;
+            height: 340px;
+            border-radius: 10px;
+            text-align: center;
+            background: #d1d1d1;
+            margin: 100px auto;
+        }
+        #display {
+            width: 300px;
+            height: 60px;
+            margin: 15px;
+            background: #ffcb28;
+            border-radius: 10px;
+            text-align: right;
+            font: 25pt bold;
+        }
+        
+        #keys {
+            width: 70px;
+            height: 35px;
+            margin-left: 5px;
+            margin-bottom: 5px;
+            border: none;
+            border-radius: 3px;
+        }
+        #keys:hover {
+            background: white;
+            font-weight: bold;
+        }
+        
+        #equal {
+            width: 70px;
+            height: 75px;
+            float: right;
+            margin-right: 10px;
+            position: relative;
+            border: none;
+            border-radius: 3px;
+        }
+        #equal:hover {
+            background: white;
+            font-weight: bold;
+        }
+        
+    </style>
+    
+</head>
+<body>
+    <div id="calculator">
+        <form>
+            <input id="display" type="text" disabled="disabled"/><br />
+            
+            <input id="keys" type="button" value="MC" onclick=""/>
+            <input id="keys" type="button" value="M+" onclick=""/>
+            <input id="keys" type="button" value="M-" onclick=""/>
+            <input id="keys" type="button" value="MR" onclick=""/><br />
+            
+            <input id="keys" type="button" value="C" onclick="addtoscreen('C')"/>
+            <input id="keys" type="button" value="+/-" onclick="doidau()"/>
+            <input id="keys" type="button" value="/" onclick="addtoscreen('/')"/>
+            <input id="keys" type="button" value="x" onclick="addtoscreen('*')"/><br />
+            
+            <input id="keys" type="button" value="7" onclick="addtoscreen('7')"/>
+            <input id="keys" type="button" value="8" onclick="addtoscreen('8')"/>
+            <input id="keys" type="button" value="9" onclick="addtoscreen('9')"/>
+            <input id="keys" type="button" value="-" onclick="addtoscreen('-')"/><br />
+            
+            <input id="keys" type="button" value="4" onclick="addtoscreen('4')"/>
+            <input id="keys" type="button" value="5" onclick="addtoscreen('5')"/>
+            <input id="keys" type="button" value="6" onclick="addtoscreen('6')"/>
+            <input id="keys" type="button" value="+" onclick="addtoscreen('+')"/><br />
+            
+            <input id="keys" type="button" value="1" onclick="addtoscreen('1')"/>
+            <input id="keys" type="button" value="2" onclick="addtoscreen('2')"/>
+            <input id="keys" type="button" value="3" onclick="addtoscreen('3')"/>
+            <input id="equal" type="button" value="=" onclick="answer()"/><br />
+            
+            
+            <input style="width: 150px;" id="keys" type="button" value="0" onclick="addtoscreen('0')"/>
+            <input id="keys" type="button" value="." onclick="addtoscreen('.')" />
+            
+        </form>
+    </div>
+    
+    <script>
+        var box = document.getElementById('display');
+        
+        function addtoscreen(x) {
+            box.value += x;
+            if (x == 'C') {
+                box.value = '';
+            }
+        }
+        
+        function doidau() {
+            x = box.value;
+            y = x * (-1);
+            box.value = y;
+            
+        }
+        
+        function answer() {
+            x = box.value;
+            x=eval(x);
+            box.value=x;
+        }
+        
+    </script>   
+    
+    
+</body>
+</html>
