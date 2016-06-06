@@ -1,19 +1,19 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-	<meta http-equiv="content-type" content="text/html" charset="UTF-8"/>
-	<meta name="author" content="GallerySoft.info" />
 
-	<title>trainee004_calculator</title>
-    <style>
-        #calculator {
+<html>
+  <head>
+    <title>trainee004_calculator</title>
+	
+	<style type="text/css">
+        #table_calc {
             width: 330px;
             height: 340px;
             border-radius: 10px;
             text-align: center;
-            background: #d1d1d1;
+            background: #b7b7b7;
             margin: 100px auto;
+            padding: 10px;
         }
+        
         #display {
             width: 300px;
             height: 60px;
@@ -22,100 +22,179 @@
             border-radius: 10px;
             text-align: right;
             font: 25pt bold;
+            
         }
         
-        #keys {
+        
+        .button {
             width: 70px;
             height: 35px;
             margin-left: 5px;
             margin-bottom: 5px;
             border: none;
             border-radius: 3px;
+            background: #eeeeee;
         }
-        #keys:hover {
+        
+        .button:hover {
             background: white;
             font-weight: bold;
         }
-        
-        #equal {
-            width: 70px;
-            height: 75px;
-            float: right;
-            margin-right: 10px;
-            position: relative;
-            border: none;
-            border-radius: 3px;
-        }
-        #equal:hover {
-            background: white;
-            font-weight: bold;
-        }
-        
-    </style>
     
+		
+	</style>
+	
+	<script type="text/javascript">
+		<!--
+		var last_result = 0;
+		var last_operation = "";
+		var new_number = false;
+		
+		// Catch keypress event
+		window.captureEvents(Event.KEYPRESS);
+		window.onkeypress = key_pressed;
+		
+		// User has pressed a key
+		function key_pressed(e) {
+			if (e.which >= 48 && e.which <= 57) { addNumber(e.which - 48); }  // number key, 0-9
+			else if (e.which == 46)             { addPeriod(); }
+			else if (e.which == 43)             { basicOperation("+"); } 
+			else if (e.which == 45)             { basicOperation("-"); }
+			else if (e.which == 42)             { basicOperation("*"); }
+			else if (e.which == 47)             { basicOperation("/"); }
+			else if (e.which == 94)             { basicOperation("^"); }
+			else if (e.which == 13 || e.which == 3) { basicOperation(""); }
+			else if (e.which == 8)              { allClear(); }
+		}
+	
+		function result() {
+			return document.getElementById("result").firstChild.data;
+		}
+		
+		function setResult(text) {
+			document.getElementById("result").firstChild.data = text;
+			document.getElementById("operator").firstChild.data = last_operation;
+		}
+		
+		// reset everything
+		function Clear() {
+			last_result = 0;
+			last_operation = "";
+			new_number = false;
+			setResult(0);
+		}
+	
+		// number key was pressed
+		function addNumber(n) {
+			if (new_number) {
+				setResult(0);
+				new_number = false;
+			}
+			var current_result = result();
+			if (current_result == "0") {
+				if (n != 0) { current_result = n; }
+			} else if (current_result == "-0") {
+				if (n != 0) { current_result = "-" + n; }
+			} else {
+				current_result += n;
+			}
+			setResult(current_result);
+		}
+		
+		// period was pressed
+		function addPeriod() {
+			if (new_number) {
+				setResult(0);
+				new_number = false;
+			}
+			var current_result = result();
+			if (current_result.indexOf(".") != -1) { return; }
+			current_result += ".";
+			setResult(current_result);
+		}
+		
+		// do a basic operation on the currently displayed result and
+		// the previous one
+		function basicOperation(op) {
+			current_result = parseFloat(result());
+			if (!new_number) {
+				if (last_operation == "+")      { current_result = last_result + current_result; }
+				else if (last_operation == "-") { current_result = last_result - current_result; }
+				else if (last_operation == "*") { current_result = last_result * current_result; }
+				else if (last_operation == "/") { current_result = last_result / current_result; }
+				else if (last_operation == "")  { ; /* do nothing */ }
+				else {
+					alert("Unsupported basic operation: " + last_operation);
+					return;
+				}
+			}
+	
+			last_result = current_result;
+			last_operation = op;
+			setResult(current_result);
+			new_number = true;
+		}
+		
+		// change the sign
+		function changeSign() {
+			var current_result = result();
+			if (current_result.charAt(0) == "-") {
+				current_result = current_result.substr(1, current_result.length - 1);
+			} else {
+				current_result = "-" + current_result;
+			}
+			setResult(current_result);
+			
+			if (new_number) {
+				last_result = current_result
+			}
+		}
+		-->
+	</script>
 </head>
-<body>
-    <div id="calculator">
-        <form>
-            <input id="display" type="text" disabled="disabled"/><br />
-            
-            <input id="keys" type="button" value="MC" onclick=""/>
-            <input id="keys" type="button" value="M+" onclick=""/>
-            <input id="keys" type="button" value="M-" onclick=""/>
-            <input id="keys" type="button" value="MR" onclick=""/><br />
-            
-            <input id="keys" type="button" value="C" onclick="addtoscreen('C')"/>
-            <input id="keys" type="button" value="+/-" onclick="doidau()"/>
-            <input id="keys" type="button" value="/" onclick="addtoscreen('/')"/>
-            <input id="keys" type="button" value="x" onclick="addtoscreen('*')"/><br />
-            
-            <input id="keys" type="button" value="7" onclick="addtoscreen('7')"/>
-            <input id="keys" type="button" value="8" onclick="addtoscreen('8')"/>
-            <input id="keys" type="button" value="9" onclick="addtoscreen('9')"/>
-            <input id="keys" type="button" value="-" onclick="addtoscreen('-')"/><br />
-            
-            <input id="keys" type="button" value="4" onclick="addtoscreen('4')"/>
-            <input id="keys" type="button" value="5" onclick="addtoscreen('5')"/>
-            <input id="keys" type="button" value="6" onclick="addtoscreen('6')"/>
-            <input id="keys" type="button" value="+" onclick="addtoscreen('+')"/><br />
-            
-            <input id="keys" type="button" value="1" onclick="addtoscreen('1')"/>
-            <input id="keys" type="button" value="2" onclick="addtoscreen('2')"/>
-            <input id="keys" type="button" value="3" onclick="addtoscreen('3')"/>
-            <input id="equal" type="button" value="=" onclick="answer()"/><br />
-            
-            
-            <input style="width: 150px;" id="keys" type="button" value="0" onclick="addtoscreen('0')"/>
-            <input id="keys" type="button" value="." onclick="addtoscreen('.')" />
-            
-        </form>
-    </div>
-    
-    <script>
-        var box = document.getElementById('display');
-        
-        function addtoscreen(x) {
-            box.value += x;
-            if (x == 'C') {
-                box.value = '';
-            }
-        }
-        
-        function doidau() {
-            x = box.value;
-            y = x * (-1);
-            box.value = y;
-            
-        }
-        
-        function answer() {
-            x = box.value;
-            x=eval(x);
-            box.value=x;
-        }
-        
-    </script>   
-    
-    
+<body >
+
+
+
+  <table id="table_calc">
+		<tr id="a"><td colspan="4" id="display"><div id="operator" style="float: left;">&nbsp;</div><span id="result">0</span></td></tr>
+		<tr>
+            <td id="button_mc" class="button">MC</td>
+            <td id="button_m+" class="button">M+</td>
+            <td id="button_m-" class="button">M-</td>
+            <td id="button_mr" class="button">MR</td>
+		</tr>
+		<tr>
+            <td id="button_c" class="button" onclick="Clear()">C</td>
+            <td id="button_sign" class="button" onclick="changeSign()">+/-</td>
+            <td id="button_divide" class="button" onclick="basicOperation('/')">/</td>
+            <td id="button_multiply" class="button" onclick="basicOperation('*')">*</td>
+		</tr>
+		<tr>
+            <td id="button_7"  class="button" onclick="addNumber(7)">7</td>
+			<td id="button_8"  class="button" onclick="addNumber(8)">8</td>
+			<td id="button_9"  class="button" onclick="addNumber(9)">9</td>
+			<td id="button_minus"  class="button" onclick="basicOperation('-')">-</td>
+		</tr>
+		<tr>    
+			<td id="button_4" class="button" onclick="addNumber(4)">4</td>
+			<td id="button_5" class="button" onclick="addNumber(5)">5</td>
+			<td id="button_6" class="button" onclick="addNumber(6)">6</td>
+			<td id="button_plus" class="button" onclick="basicOperation('+')">+</td>
+		</tr>
+		<tr>              
+			<td id="button_1" class="button" onclick="addNumber(1)">1</td>
+			<td id="button_2" class="button" onclick="addNumber(2)">2</td>
+			<td id="button_3" class="button" onclick="addNumber(3)">3</td>
+			<td rowspan="2" id="button_enter" class="button" onclick="basicOperation('')">=</td>
+        </tr>
+        <tr>
+            <td id="button_0" colspan="2" class="button" onclick="addNumber(0)">0</td>
+			<td id="button_point" class="button" onclick="addPeriod()">.</td>
+		</tr>
+        </tr>
+	</table>
+		
+
 </body>
 </html>
